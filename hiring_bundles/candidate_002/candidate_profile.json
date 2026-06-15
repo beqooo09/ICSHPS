@@ -1,0 +1,31 @@
+{
+  "candidate_id": "C002",
+  "name": "Mentor Berisha",
+  "email": "mentor.berisha@email.com",
+  "phone": "+383 44 987 654",
+  "location": "Prizren, Kosovo",
+  "education": [
+    {
+      "degree": "Bachelor of Information Technology",
+      "institution": "University of Prizren",
+      "graduation_year": 2022,
+      "verified": false
+    }
+  ],
+  "experience": [
+    {
+      "job_title": "Junior Developer",
+      "company": "SoftCo",
+      "start_date": "2022-09",
+      "end_date": "2024-01",
+      "description": "Worked on web applications using JavaScript"
+    }
+  ],
+  "skills": ["JavaScript", "HTML", "CSS", "Git"],
+  "certifications": [],
+  "experience_years": 2,
+  "extraction_confidence": 0.88,
+  "extraction_method": "pdf_text",
+  "anomalies_detected": [],
+  "raw_text_preview": "Mentor Berisha - IT Graduate seeking software role..."
+}

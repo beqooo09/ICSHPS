@@ -1,0 +1,31 @@
+{
+  "candidate_id": "C003",
+  "name": "Vjosa Gashi",
+  "email": "vjosa.gashi@email.com",
+  "phone": "+383 44 555 333",
+  "location": "Ferizaj, Kosovo",
+  "education": [
+    {
+      "degree": "Master of Computer Science",
+      "institution": "University of Pristina",
+      "graduation_year": 2022,
+      "verified": false
+    }
+  ],
+  "experience": [
+    {
+      "job_title": "Data Analyst",
+      "company": "Analytics SH.P.K",
+      "start_date": "2022-03",
+      "end_date": "2025-06",
+      "description": "Analyzed data using Python and SQL, built dashboards"
+    }
+  ],
+  "skills": ["Python", "SQL", "Power BI", "Excel", "Git"],
+  "certifications": ["Microsoft Power BI Certification"],
+  "experience_years": 3,
+  "extraction_confidence": 0.61,
+  "extraction_method": "ocr",
+  "anomalies_detected": ["low_confidence_extraction", "scanned_document"],
+  "raw_text_preview": "Vjosa Gashi - Data Analyst with Masters degree..."
+}
