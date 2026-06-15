@@ -1,0 +1,31 @@
+{
+  "candidate_id": "C001",
+  "name": "Ana Krasniqi",
+  "email": "ana.krasniqi@email.com",
+  "phone": "+383 44 123 456",
+  "location": "Pristina, Kosovo",
+  "education": [
+    {
+      "degree": "Bachelor of Computer Science",
+      "institution": "University of Pristina",
+      "graduation_year": 2023,
+      "verified": false
+    }
+  ],
+  "experience": [
+    {
+      "job_title": "Junior Data Engineer",
+      "company": "TechCorp Kosovo",
+      "start_date": "2023-06",
+      "end_date": "2025-01",
+      "description": "Built data pipelines using Python and SQL"
+    }
+  ],
+  "skills": ["Python", "SQL", "Databricks", "Git", "Azure"],
+  "certifications": ["Azure Data Fundamentals"],
+  "experience_years": 2,
+  "extraction_confidence": 0.95,
+  "extraction_method": "pdf_text",
+  "anomalies_detected": [],
+  "raw_text_preview": "Ana Krasniqi - Computer Science Graduate seeking Data Engineering role..."
+}
