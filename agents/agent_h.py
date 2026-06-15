@@ -21,7 +21,7 @@ class AgentH:
             print(warning)
             return None
 
-        with open(filepath, "r") as f:
+        with open(filepath, "r", encoding="utf-8") as f:
             return json.load(f)
 
     def load_all_outputs(self):
@@ -83,3 +83,60 @@ class AgentH:
             "decision": "manual_review",
             "reason": "Insufficient data or weak match score"
         }
+
+    def write_decision(self, decision_result):
+        os.makedirs(self.candidate_folder, exist_ok=True)
+
+        output = {
+            "candidate_id": self.candidate_id,
+            "decision": decision_result["decision"],
+            "reason": decision_result["reason"],
+            "overall_score": self.data.get("match_scores", {}).get("overall_score") if self.data.get("match_scores") else None,
+            "compliance_passed": self.data.get("compliance_flags", {}).get("eeo_compliant") if self.data.get("compliance_flags") else None,
+            "credentials_passed": self.data.get("credential_report", {}).get("verification_status") == "passed" if self.data.get("credential_report") else None,
+            "warnings": self.warnings,
+            "decided_at": datetime.now().isoformat(),
+            "decided_by": "Agent_H"
+        }
+
+        filepath = os.path.join(self.candidate_folder, "hiring_decision.json")
+        with open(filepath, "w", encoding="utf-8") as f:
+            json.dump(output, f, indent=2)
+
+        print(f"Decision saved to {filepath}")
+        return output
+
+    def write_audit_log(self, decision_result):
+        lines = []
+        lines.append(f"# Audit Log - {self.candidate_id}")
+        lines.append(f"**Date:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        lines.append(f"**Decided by:** Agent_H")
+        lines.append("")
+        lines.append("## Decision")
+        lines.append(f"**Result:** {decision_result['decision'].upper()}")
+        lines.append(f"**Reason:** {decision_result['reason']}")
+        lines.append("")
+        lines.append("## Files Loaded")
+        for key, value in self.data.items():
+            status = "Loaded" if value is not None else "Missing"
+            lines.append(f"- {key}: {status}")
+        lines.append("")
+        lines.append("## Warnings")
+        if self.warnings:
+            for w in self.warnings:
+                lines.append(f"- {w}")
+        else:
+            lines.append("- No warnings")
+        lines.append("")
+        lines.append("## Scores")
+        if self.data.get("match_scores"):
+            lines.append(f"- Overall Score: {self.data['match_scores'].get('overall_score')}")
+            lines.append(f"- Must Have Criteria Met: {self.data['match_scores'].get('must_have_criteria_met')}")
+        else:
+            lines.append("- Match scores not available")
+
+        filepath = os.path.join(self.candidate_folder, "audit_log.md")
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write("\n".join(lines))
+
+        print(f"Audit log saved to {filepath}")
