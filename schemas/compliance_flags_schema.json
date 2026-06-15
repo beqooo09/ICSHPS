@@ -1,0 +1,12 @@
+{
+  "candidate_id": "C001",
+  "job_id": "JOB-001",
+  "eeo_compliant": true,
+  "flags": [],
+  "protected_characteristics_detected": false,
+  "problematic_jd_language": [],
+  "adverse_impact_risk": "low",
+  "data_retention_compliant": true,
+  "checked_at": "2026-06-11T10:00:00",
+  "notes": "No compliance issues detected"
+}

@@ -1,0 +1,15 @@
+{
+  "candidate_id": "C001",
+  "job_id": "JOB-001",
+  "overall_score": 0.85,
+  "skill_match_score": 0.90,
+  "experience_match_score": 0.80,
+  "education_match_score": 0.75,
+  "skills_matched": ["Python", "SQL", "Git"],
+  "skills_missing": ["Docker", "Kubernetes"],
+  "experience_years_required": 2,
+  "experience_years_candidate": 2,
+  "must_have_criteria_met": true,
+  "scoring_notes": "Strong Python match, missing DevOps skills",
+  "scored_at": "2026-06-11T10:00:00"
+}

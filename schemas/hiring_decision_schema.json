@@ -1,0 +1,15 @@
+{
+  "candidate_id": "C001",
+  "job_id": "JOB-001",
+  "decision": "advance",
+  "decision_reason": "Strong skill match, all credentials verified, no compliance issues",
+  "overall_score": 0.85,
+  "compliance_passed": true,
+  "credentials_passed": true,
+  "must_have_criteria_met": true,
+  "exceptions": [],
+  "interview_panel": [],
+  "next_step": "schedule_interview",
+  "decided_at": "2026-06-11T10:00:00",
+  "decided_by": "Agent_H"
+}
