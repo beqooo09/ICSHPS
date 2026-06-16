@@ -85,7 +85,7 @@ ICSHPS/
 
 | Name | Role |
 |------|------|
-| Beqir Bytyqi | Agent H, Agent G, Dashboard, Integration |
+| Beqir Bytyçi  | Agent H, Agent G, Dashboard, Integration |
 | Erina Mjeku | Agent C, Agent D, Agent E |
 | Dion Latifi | Agent A, Agent B |
 
