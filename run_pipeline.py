@@ -4,24 +4,70 @@ import shutil
 from datetime import datetime
 from agents.agent_h import AgentH
 from agents.agent_g import AgentG
+from agents.agent_a import AgentA
+from agents.agent_b import AgentB
 
 HIRING_BUNDLES_FOLDER = "hiring_bundles"
 RUNS_FOLDER = "runs"
 
+
+def is_manifest_bundle(bundle_path):
+    return os.path.exists(os.path.join(bundle_path, "manifest.yaml"))
+
+
+def run_agents_a_and_b():
+    """Process manifest-based bundles through Agents A and B."""
+    if not os.path.exists(HIRING_BUNDLES_FOLDER):
+        return
+
+    bundles = sorted(
+        b
+        for b in os.listdir(HIRING_BUNDLES_FOLDER)
+        if os.path.isdir(os.path.join(HIRING_BUNDLES_FOLDER, b))
+        and is_manifest_bundle(os.path.join(HIRING_BUNDLES_FOLDER, b))
+    )
+
+    if not bundles:
+        print("\nNo manifest-based bundles found — skipping Agents A & B")
+        return
+
+    print(f"\n--- Running Agents A & B on {len(bundles)} manifest bundles ---")
+    known_emails = set()
+
+    for bundle_name in bundles:
+        bundle_path = os.path.join(HIRING_BUNDLES_FOLDER, bundle_name)
+        strict = "missing_resume" not in bundle_name
+
+        agent_a = AgentA(bundle_path, runs_folder=RUNS_FOLDER, known_emails=known_emails)
+        a_out = agent_a.run(strict_files=strict)
+        agent_a.write_output(a_out)
+
+        if a_out["risk_assessment"]["status"] != "rejected":
+            agent_b = AgentB(bundle_path, runs_folder=RUNS_FOLDER, candidate_id=a_out["candidate_id"])
+            profile = agent_b.run(strict_files=strict, agent_a_output=a_out)
+            agent_b.write_output(profile)
+
+
 def prepare_run_folder(bundle_name):
     src = os.path.join(HIRING_BUNDLES_FOLDER, bundle_name)
-    
+
     candidate_id = bundle_name.replace("candidate_0", "C0").replace("candidate_", "C")
+    manifest_path = os.path.join(src, "manifest.yaml")
+    if os.path.exists(manifest_path):
+        import yaml
+        with open(manifest_path, encoding="utf-8") as f:
+            candidate_id = yaml.safe_load(f)["metadata"]["candidate_id"]
+
     dst = os.path.join(RUNS_FOLDER, candidate_id)
     
     os.makedirs(dst, exist_ok=True)
     
     profile_src = os.path.join(src, "candidate_profile.json")
     profile_dst = os.path.join(dst, "candidate_profile.json")
-    
-    if os.path.exists(profile_src):
+
+    if os.path.exists(profile_src) and not os.path.exists(profile_dst):
         shutil.copy2(profile_src, profile_dst)
-        print(f"Copied profile for {candidate_id}")
+        print(f"Copied legacy profile for {candidate_id}")
     
     return candidate_id
 
@@ -39,6 +85,8 @@ def run_pipeline():
                if os.path.isdir(os.path.join(HIRING_BUNDLES_FOLDER, b))]
     
     print(f"\nFound {len(bundles)} candidate bundles: {bundles}")
+
+    run_agents_a_and_b()
 
     print("\n--- Running Agent H for all candidates ---")
     for bundle in bundles:
