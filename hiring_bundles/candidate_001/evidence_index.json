@@ -1,0 +1,62 @@
+{
+    "education": [
+        {
+            "claim": "Bachelor Computer Science",
+            "evidence_type": "degree",
+            "source": "uploaded_degree_document",
+            "verified": true,
+            "confidence": 0.95
+        }
+    ],
+
+    "certifications": [
+        {
+            "claim": "Azure Fundamentals",
+            "evidence_type": "certificate",
+            "source": "certificate_document",
+            "verified": true,
+            "confidence": 0.9
+        },
+        {
+            "claim": "AWS Cloud Practitioner",
+            "evidence_type": "certificate",
+            "source": "certificate_document",
+            "verified": true,
+            "confidence": 0.88
+        }
+    ],
+
+    "experience": [
+        {
+            "claim": "Data Engineer at Tech Solutions",
+            "evidence_type": "employment_record",
+            "source": "resume_work_history",
+            "verified": true,
+            "confidence": 0.9
+        }
+    ],
+
+    "skills": [
+        {
+            "claim": "Python",
+            "evidence_type": "project",
+            "source": "github_project",
+            "verified": true,
+            "confidence": 0.95
+        },
+        {
+            "claim": "SQL",
+            "evidence_type": "project",
+            "source": "work_experience",
+            "verified": true,
+            "confidence": 0.9
+        },
+        {
+            "claim": "Docker",
+            "evidence_type": "project",
+            "source": "project_repository",
+            "verified": true,
+            "confidence": 0.85
+        }
+    ]
+}

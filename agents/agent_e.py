@@ -321,7 +321,9 @@ class AgentE:
 if __name__ == "__main__":
     #run test, added evidence_index.json manually only at candidate_001
     candidates = [
-        "candidate_001"
+        "candidate_001",
+        "candidate_002",
+        "candidate_003"
     ]
 
     for candidate_id in candidates:

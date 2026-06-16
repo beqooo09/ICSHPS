@@ -1,0 +1,42 @@
+{
+    "candidate_id": "candidate_003",
+
+    "education_documents": [
+        {
+            "claim": "Master of Software Engineering",
+            "evidence_found": false,
+            "source": "No degree document provided",
+            "confidence": 0.0
+        }
+    ],
+
+    "certifications": [
+        {
+            "claim": "Azure Data Engineer Associate",
+            "evidence_found": false,
+            "source": "Certificate ID could not be verified",
+            "confidence": 0.0
+        }
+    ],
+
+    "work_experience": [
+        {
+            "claim": "Senior Data Engineer at Global Systems",
+            "evidence_found": false,
+            "source": "Employment record unavailable",
+            "confidence": 0.2
+        }
+    ],
+
+    "projects": [
+        {
+            "name": "Machine Learning Platform",
+            "evidence_found": true,
+            "source": "github_repository",
+            "verified_skills": [
+                "Python"
+            ],
+            "confidence": 0.65
+        }
+    ]
+}
