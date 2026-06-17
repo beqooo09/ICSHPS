@@ -30,26 +30,9 @@ class AgentD:
         self.profile = None
         self.match_scores = None
 
-        #static per momentin
-        self.job_description = {
-            "job_id": "JOB-001",
-            "title": "Data Engineer",
-            "description": (
-                "We are looking for a skilled Data Engineer "
-                "with experience in Python, SQL, Azure, Git, and Docker."
-            )
-        }
-        #biased jd test
-        # self.job_description = {
-        #     "job_id": "JOB-001",
-        #     "title": "Data Engineer",
-        #     "description": (
-        #         "We need a young rockstar Data Engineer. "
-        #         "Must be a native speaker and a recent graduate. "
-        #         "Looking for an aggressive developer."
-        #     )
-        # }
-
+        self.agent_a = None
+        self.job_description = None
+        
         self.policy = self.load_policy()
 
         self.biased_terms = self.policy.get("biased_terms", [])
@@ -77,13 +60,38 @@ class AgentD:
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
 
+    def load_job_description(self):
+
+        self.agent_a = self.load_file("agent_a.json")
+
+        if self.agent_a is None:
+            self.job_description = {
+                "job_id": "UNKNOWN-JOB",
+                "title": "Unknown Role",
+                "description": ""
+            }
+            return self.job_description
+
+        context_packet = self.agent_a.get("context_packet", {})
+
+        self.job_description = {
+            "job_id": context_packet.get("job_id", "UNKNOWN-JOB"),
+            "title": context_packet.get("role_title", "Unknown Role"),
+            "description": context_packet.get("job_description", "")
+        }
+
+        return self.job_description    
+
     def load_inputs(self):
         self.profile = self.load_file("candidate_profile.json")
         self.match_scores = self.load_file("match_scores.json")
+        self.load_job_description()
 
     def check_problematic_jd_language(self):
-        jd_text = self.job_description["description"].lower()
-
+        jd_text = self.job_description.get(
+            "description",
+            ""
+        ).lower()
         found_terms = []
 
         for term in self.biased_terms:
@@ -182,7 +190,15 @@ class AgentD:
 
         result = {
             "candidate_id": self.candidate_id,
-            "job_id": self.job_description["job_id"],
+            # "job_id": self.job_description["job_id"],
+            "job_id": self.job_description.get(
+                "job_id",
+                "UNKNOWN-JOB"
+                ),
+            "job_title": self.job_description.get(
+                "title",
+                "Unknown Role"
+            ),
             "eeo_compliant": eeo_compliant,
             "flags": flags,
             "protected_characteristics_detected": len(protected_characteristics) > 0,
@@ -224,15 +240,22 @@ class AgentD:
         print(f"d - check {relative_path}")
         return result
 
-
 if __name__ == "__main__":
-    #test momental, shtohjet ne pipeline
+
+    runs_folder = "../runs"
+
     candidates = [
-        "candidate_001",
-        "candidate_002",
-        "candidate_003"
+        folder for folder in os.listdir(runs_folder)
+        if folder.startswith("C")
+        and os.path.isdir(
+            os.path.join(runs_folder, folder)
+        )
     ]
 
     for candidate_id in candidates:
-        agent = AgentD(candidate_id)
+        agent = AgentD(
+            candidate_id,
+            runs_folder=runs_folder
+        )
+
         agent.save_results()

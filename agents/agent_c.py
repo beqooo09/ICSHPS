@@ -18,28 +18,29 @@ class AgentC:
 
         self.candidate = None
 
-        # based on agent B kjo ndrron, niher veq me testu C
-        self.job_description = {
-            "job_id": "JOB-001",
-            "title": "Data Engineer",
-            "required_skills": [
-                "Python",
-                "SQL",
-                "Azure",
-                "Git",
-                "Docker"
-            ],
-            "must_have_skills": [
-                "Python",
-                "SQL"
-            ],
-            "experience_required": 2,
-            "education_keywords": [
-                "Computer Science",
-                "Software Engineering"
-            ]
-        }
-
+        # # based on agent B kjo ndrron, niher veq me testu C
+        # self.job_description = {
+        #     "job_id": "JOB-001",
+        #     "title": "Data Engineer",
+        #     "required_skills": [
+        #         "Python",
+        #         "SQL",
+        #         "Azure",
+        #         "Git",
+        #         "Docker"
+        #     ],
+        #     "must_have_skills": [
+        #         "Python",
+        #         "SQL"
+        #     ],
+        #     "experience_required": 2,
+        #     "education_keywords": [
+        #         "Computer Science",
+        #         "Software Engineering"
+        #     ]
+        # }
+        self.agent_a = None
+        self.job_description = None
 
     def load_candidate(self):
         path = os.path.join(
@@ -57,6 +58,51 @@ class AgentC:
 
         return self.candidate
 
+    def load_agent_a(self):
+        path = os.path.join(
+            self.candidate_folder,
+            "agent_a.json"
+        )
+
+        if not os.path.exists(path):
+            raise FileNotFoundError(
+                f"agent_a.json missing for {self.candidate_id}"
+            )
+
+        with open(path, "r", encoding="utf-8") as f:
+            self.agent_a = json.load(f)
+
+        return self.agent_a
+    
+    def load_job_description(self):
+        self.load_agent_a()
+
+        context_packet = self.agent_a.get("context_packet", {})
+
+        self.job_description = {
+            "job_id": context_packet.get("job_id", "UNKNOWN-JOB"),
+            "title": context_packet.get("role_title", "Unknown Role"),
+            "job_description_text": context_packet.get("job_description", ""),
+            "required_skills": context_packet.get("required_skills", []),
+            "preferred_skills": context_packet.get("preferred_skills", []),
+
+        # Agent A uses this name
+            "experience_required": context_packet.get("experience_years_min", 0),
+
+        # Agent A does not have must_have_skills separately,
+        # so we treat required_skills as must-have for now
+            "must_have_skills": context_packet.get("required_skills", []),
+
+        # Agent A does not give education_keywords yet,
+        # so keep it empty unless later added to job_requirements.yaml
+            "education_keywords": context_packet.get("education_keywords", []),
+
+            "location": context_packet.get("location", {}),
+            "hiring_manager_preferences": context_packet.get("hiring_manager_preferences", []),
+            "eeo_requirements": context_packet.get("eeo_requirements", [])
+        }
+
+        return self.job_description
 
     def calculate_skill_score(self):
 
@@ -67,8 +113,11 @@ class AgentC:
 
         required_skills = [
             skill.lower()
-            for skill in self.job_description["required_skills"]
+            for skill in self.job_description.get("required_skills", [])
         ]
+
+        if not required_skills:
+            return 0, [], []
 
         matched = [
             skill
@@ -94,9 +143,13 @@ class AgentC:
             0
         )
 
-        required_exp = self.job_description[
-            "experience_required"
-        ]
+        required_exp = self.job_description.get(
+            "experience_required",
+            0
+        )
+
+        if required_exp == 0:
+            return 1.0
 
         score = min(
             candidate_exp / required_exp,
@@ -112,9 +165,13 @@ class AgentC:
             self.candidate.get("education", "")
         ).lower()
 
-        keywords = self.job_description[
-            "education_keywords"
-        ]
+        keywords = self.job_description.get(
+            "education_keywords",
+            []
+        )
+
+        if not keywords:
+            return 1.0
 
         for keyword in keywords:
             if keyword.lower() in education:
@@ -130,7 +187,7 @@ class AgentC:
             for s in self.candidate.get("skills", [])
         ]
 
-        for skill in self.job_description["must_have_skills"]:
+        for skill in self.job_description.get("must_have_skills", []):
             if skill.lower() not in candidate_skills:
                 return False
 
@@ -144,6 +201,7 @@ class AgentC:
         )
 
         self.load_candidate()
+        self.load_job_description()
 
         (
             skill_score,
@@ -246,17 +304,18 @@ class AgentC:
     
 if __name__ == "__main__":
 
-        #test run, ma vone shtohet ne pipeline
-        candidates = [
-            "candidate_001",
-            "candidate_002",
-            "candidate_003"
-        ]
+    runs_folder = "runs"
 
-        for candidate_id in candidates:
-            agent = AgentC(
-                candidate_id,
-                runs_folder="../runs"
-            )
+    candidates = [
+        folder for folder in os.listdir(runs_folder)
+        if folder.startswith("C")
+        and os.path.isdir(os.path.join(runs_folder, folder))
+    ]
 
-            agent.save_results()    
+    for candidate_id in candidates:
+        agent = AgentC(
+            candidate_id,
+            runs_folder=runs_folder
+        )
+
+        agent.save_results()

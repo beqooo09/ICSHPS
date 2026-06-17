@@ -46,9 +46,14 @@ class AgentE:
             "candidate_profile.json"
         )
 
-        self.evidence_index = self.load_json(
-            os.path.join(self.candidate_folder, "evidence_index.json"),
-            "evidence_index.json"
+        agent_a = self.load_json(
+            os.path.join(self.candidate_folder, "agent_a.json"),
+            "agent_a.json"
+        )
+
+        self.evidence_index = agent_a.get(
+            "evidence_index",
+            {}
         )
 
     def normalize_claims(self, value):
@@ -94,15 +99,24 @@ class AgentE:
         return str(claim)
 
     def get_evidence_items(self, category):
-        items = self.evidence_index.get(category, [])
+        if not isinstance(self.evidence_index, list):
+            return []
 
-        if isinstance(items, dict):
-            return [items]
+        category_map = {
+            "skills": "skills",
+            "education": "education",
+            "experience": "experience",
+            "certifications": "certification",
+            "certification": "certification"
+        }
 
-        if isinstance(items, list):
-            return items
+        wanted_section = category_map.get(category, category)
 
-        return []
+        return [
+            item for item in self.evidence_index
+            if item.get("section_type") == wanted_section
+        ]
+    
 
     def find_matching_evidence(self, claim, category):
         claim_text = self.claim_to_text(claim).lower()
@@ -148,7 +162,7 @@ class AgentE:
                     "type": category,
                     "claim": claim_text,
                     "evidence_found": True,
-                    "source": evidence.get("source", "unknown"),
+                    "source": evidence.get("source_file", "unknown"),
                     "confidence": evidence.get("confidence", 1)
                 })
             else:
@@ -179,7 +193,7 @@ class AgentE:
                 "name": cert_name,
                 "verified": evidence is not None,
                 "source": (
-                    evidence.get("source", "unknown")
+                    evidence.get("source_file", "unknown")
                     if evidence
                     else "No matching evidence found"
                 )
@@ -317,15 +331,22 @@ class AgentE:
 
         return result
 
+# if __name__ == "__main__":
 
-if __name__ == "__main__":
-    #run test, added evidence_index.json manually only at candidate_001
-    candidates = [
-        "candidate_001",
-        "candidate_002",
-        "candidate_003"
-    ]
+#     runs_folder = "../runs"
 
-    for candidate_id in candidates:
-        agent = AgentE(candidate_id)
-        agent.save_results()
+#     candidates = [
+#         folder for folder in os.listdir(runs_folder)
+#         if folder.startswith("C")
+#         and os.path.isdir(
+#             os.path.join(runs_folder, folder)
+#         )
+#     ]
+
+#     for candidate_id in candidates:
+#         agent = AgentE(
+#             candidate_id,
+#             runs_folder=runs_folder
+#         )
+
+#         agent.save_results()
