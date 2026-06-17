@@ -1,0 +1,15 @@
+bundle_id: synthetic_missing_resume_002
+source: email
+application_type: standard
+candidate_category: experienced
+job:
+  role_title: Data Analyst
+  job_id: JOB-DA-002
+  description: job/description.md
+  requirements: job/requirements.yaml
+files:
+  resume: resume/resume.pdf
+  application_form: application/form.json
+metadata:
+  candidate_id: C102
+  submitted_at: "2026-06-15T11:00:00Z"

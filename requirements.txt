@@ -3,3 +3,8 @@ openai
 python-dotenv
 pypdf2
 pandas
+pyyaml
+jsonschema
+pdfplumber
+pytest
+reportlab

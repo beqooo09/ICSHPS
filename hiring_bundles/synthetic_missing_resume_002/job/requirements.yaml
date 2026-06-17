@@ -1,0 +1,11 @@
+required_skills:
+  - SQL
+preferred_skills:
+  - Python
+experience_years_min: 2
+location:
+  city: Remote
+  country: US
+hiring_manager_preferences: []
+eeo_requirements:
+  - collect_voluntary_self_id

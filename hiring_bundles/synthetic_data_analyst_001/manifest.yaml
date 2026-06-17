@@ -1,0 +1,19 @@
+bundle_id: synthetic_data_analyst_001
+source: career_portal
+application_type: standard
+candidate_category: experienced
+job:
+  role_title: Data Analyst
+  job_id: JOB-DA-001
+  description: job/description.md
+  requirements: job/requirements.yaml
+files:
+  resume: resume/resume.pdf
+  application_form: application/form.json
+  cover_letter: application/cover_letter.txt
+  portfolio:
+    - portfolio/sample_project.pdf
+metadata:
+  candidate_id: C101
+  submitted_at: "2026-06-15T10:00:00Z"
+  external_id: EXT-001

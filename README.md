@@ -52,12 +52,17 @@ cd ICSHPS
 pip install -r requirements.txt
 ```
 
-**3. Run the full pipeline**
+**3. Run Agents A & B (resume intake + extraction)**
+```bash
+python scripts/run_agents_ab.py
+```
+
+**4. Run the full pipeline**
 ```bash
 python run_pipeline.py
 ```
 
-**4. View the dashboard**
+**5. View the dashboard**
 ```bash
 python -m streamlit run dashboard/app.py
 ```
@@ -65,17 +70,23 @@ python -m streamlit run dashboard/app.py
 ## Project structure
 ICSHPS/
 
-├── agents/          # All agent files
+├── agents/          # All agent files (agent_a.py, agent_b.py, agent_h.py, agent_g.py)
 
 ├── schemas/         # JSON schemas for inter-agent communication
 
-├── hiring_bundles/  # Input candidate data
+├── hiring_bundles/  # Input candidate data (manifest.yaml bundles + legacy samples)
+
+├── docs/            # hiring_bundle_spec.md
+
+├── scripts/         # generate_synthetic_pdfs.py, run_agents_ab.py
 
 ├── runs/            # Pipeline outputs per candidate
 
 ├── dashboard/       # Streamlit dashboard
 
-├── tests/           # Test scripts
+├── tests/           # pytest suite for Agents A & B
+
+├── bundle_loader.py # Hiring bundle loader
 
 ├── run_pipeline.py  # One-command pipeline runner
 

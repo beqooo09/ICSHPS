@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "HiringBundleManifest",
+  "type": "object",
+  "required": [
+    "bundle_id",
+    "source",
+    "application_type",
+    "candidate_category",
+    "job",
+    "files",
+    "metadata"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "bundle_id": { "type": "string", "minLength": 1 },
+    "source": {
+      "type": "string",
+      "enum": ["career_portal", "email", "linkedin", "job_board", "referral"]
+    },
+    "application_type": { "type": "string", "minLength": 1 },
+    "candidate_category": { "type": "string", "minLength": 1 },
+    "job": {
+      "type": "object",
+      "required": ["role_title", "job_id", "description", "requirements"],
+      "additionalProperties": false,
+      "properties": {
+        "role_title": { "type": "string" },
+        "job_id": { "type": "string" },
+        "description": { "type": "string" },
+        "requirements": { "type": "string" }
+      }
+    },
+    "files": {
+      "type": "object",
+      "required": ["resume", "application_form"],
+      "additionalProperties": false,
+      "properties": {
+        "resume": { "type": "string" },
+        "application_form": { "type": "string" },
+        "cover_letter": { "type": "string" },
+        "portfolio": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["candidate_id", "submitted_at"],
+      "additionalProperties": false,
+      "properties": {
+        "candidate_id": { "type": "string" },
+        "submitted_at": { "type": "string" },
+        "referrer": { "type": "string" },
+        "external_id": { "type": "string" }
+      }
+    }
+  }
+}

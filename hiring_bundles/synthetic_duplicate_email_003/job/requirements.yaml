@@ -1,0 +1,13 @@
+required_skills:
+  - SQL
+  - Python
+preferred_skills:
+  - Power BI
+experience_years_min: 3
+location:
+  city: Remote
+  country: US
+hiring_manager_preferences:
+  - detail oriented
+eeo_requirements:
+  - collect_voluntary_self_id
