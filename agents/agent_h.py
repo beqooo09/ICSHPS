@@ -27,21 +27,32 @@ class AgentH:
     def load_all_outputs(self):
         print(f"\nAgent H loading data for candidate: {self.candidate_id}")
 
+        self.data["agent_a"] = self.load_file("agent_a.json")
         self.data["profile"] = self.load_file("candidate_profile.json")
         self.data["match_scores"] = self.load_file("match_scores.json")
         self.data["compliance_flags"] = self.load_file("compliance_flags.json")
         self.data["credential_report"] = self.load_file("credential_report.json")
 
-        print(f"Loaded {sum(1 for v in self.data.values() if v is not None)} out of 4 files")
+        print(f"Loaded {sum(1 for v in self.data.values() if v is not None)} out of 5 files")
         return self.data
 
     def make_decision(self):
         print(f"\nAgent H making decision for: {self.candidate_id}")
 
+        agent_a = self.data.get("agent_a")
         profile = self.data.get("profile")
         match_scores = self.data.get("match_scores")
         compliance = self.data.get("compliance_flags")
         credentials = self.data.get("credential_report")
+
+        # Rule 0: If Agent A already rejected at intake, respect that
+        if agent_a and agent_a.get("risk_assessment", {}).get("status") == "rejected":
+            risk_flags = agent_a.get("risk_assessment", {}).get("risk_flags", [])
+            reasons = ", ".join(f.get("message", f.get("code", "")) for f in risk_flags)
+            return {
+                "decision": "reject",
+                "reason": f"Rejected at intake by Agent A: {reasons}"
+            }
 
         # Rule 1: If no profile, cannot process
         if profile is None:
