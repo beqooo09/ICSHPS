@@ -25,6 +25,14 @@ BUNDLE_RESUMES = {
         "Experience: Data Analyst at XYZ Inc (2019-2023)",
         "Education: BSc Mathematics, City College, 2018",
     ],
+    "candidate_ana_krasniqi": [
+        "Ana Krasniqi",
+        "ana.krasniqi@email.com | +383-44-123-456",
+        "Skills: Python, SQL, Databricks, Git, Azure",
+        "Experience: Junior Data Engineer at TechCorp Kosovo (2023-2025)",
+        "Education: BSc Computer Science, University of Pristina, 2023",
+        "Certifications: Azure Data Fundamentals",
+    ],
 }
 
 

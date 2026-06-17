@@ -1,0 +1,15 @@
+required_skills:
+  - Python
+  - SQL
+preferred_skills:
+  - Azure
+  - Databricks
+  - Git
+experience_years_min: 2
+location:
+  city: Pristina
+  country: KS
+hiring_manager_preferences:
+  - clean code
+eeo_requirements:
+  - collect_voluntary_self_id

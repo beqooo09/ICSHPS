@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from datetime import datetime
 
 
@@ -112,7 +113,7 @@ class AgentD:
         detected = []
 
         for term in self.protected_terms:
-            if term.lower() in profile_text:
+            if re.search(rf"\b{re.escape(term.lower())}\b", profile_text):
                 detected.append(term)
 
         return detected

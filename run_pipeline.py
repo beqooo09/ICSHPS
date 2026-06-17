@@ -6,6 +6,9 @@ from agents.agent_h import AgentH
 from agents.agent_g import AgentG
 from agents.agent_a import AgentA
 from agents.agent_b import AgentB
+from agents.agent_c import AgentC
+from agents.agent_d import AgentD
+from agents.agent_e import AgentE
 
 HIRING_BUNDLES_FOLDER = "hiring_bundles"
 RUNS_FOLDER = "runs"
@@ -48,6 +51,38 @@ def run_agents_a_and_b():
             agent_b.write_output(profile)
 
 
+def run_agents_c_d_e(candidate_id):
+    """Run Agent C, D, E for one candidate. Skips gracefully if inputs are missing."""
+    candidate_folder = os.path.join(RUNS_FOLDER, candidate_id)
+    profile_path = os.path.join(candidate_folder, "candidate_profile.json")
+
+    if not os.path.exists(profile_path):
+        print(f"Skipping Agents C/D/E for {candidate_id} — no candidate_profile.json")
+        return
+
+    try:
+        agent_c = AgentC(candidate_id, runs_folder=RUNS_FOLDER)
+        agent_c.save_results()
+    except Exception as e:
+        print(f"Agent C failed for {candidate_id}: {e}")
+
+    try:
+        agent_d = AgentD(candidate_id, runs_folder=RUNS_FOLDER)
+        agent_d.save_results()
+    except Exception as e:
+        print(f"Agent D failed for {candidate_id}: {e}")
+
+    agent_a_path = os.path.join(candidate_folder, "agent_a.json")
+    if os.path.exists(agent_a_path):
+        try:
+            agent_e = AgentE(candidate_id, runs_folder=RUNS_FOLDER)
+            agent_e.save_results()
+        except Exception as e:
+            print(f"Agent E failed for {candidate_id}: {e}")
+    else:
+        print(f"Skipping Agent E for {candidate_id} — no agent_a.json (evidence index unavailable)")
+
+
 def prepare_run_folder(bundle_name):
     src = os.path.join(HIRING_BUNDLES_FOLDER, bundle_name)
 
@@ -59,17 +94,18 @@ def prepare_run_folder(bundle_name):
             candidate_id = yaml.safe_load(f)["metadata"]["candidate_id"]
 
     dst = os.path.join(RUNS_FOLDER, candidate_id)
-    
+
     os.makedirs(dst, exist_ok=True)
-    
+
     profile_src = os.path.join(src, "candidate_profile.json")
     profile_dst = os.path.join(dst, "candidate_profile.json")
 
     if os.path.exists(profile_src) and not os.path.exists(profile_dst):
         shutil.copy2(profile_src, profile_dst)
         print(f"Copied legacy profile for {candidate_id}")
-    
+
     return candidate_id
+
 
 def run_pipeline():
     print("=" * 60)
@@ -81,17 +117,19 @@ def run_pipeline():
         print("No hiring_bundles folder found. Exiting.")
         return
 
-    bundles = [b for b in os.listdir(HIRING_BUNDLES_FOLDER) 
+    bundles = [b for b in os.listdir(HIRING_BUNDLES_FOLDER)
                if os.path.isdir(os.path.join(HIRING_BUNDLES_FOLDER, b))]
-    
+
     print(f"\nFound {len(bundles)} candidate bundles: {bundles}")
 
     run_agents_a_and_b()
 
-    print("\n--- Running Agent H for all candidates ---")
+    print("\n--- Running Agents C, D, E and then Agent H for all candidates ---")
     for bundle in bundles:
         candidate_id = prepare_run_folder(bundle)
         print(f"\nProcessing: {candidate_id}")
+
+        run_agents_c_d_e(candidate_id)
 
         agent_h = AgentH(candidate_id, runs_folder=RUNS_FOLDER)
         agent_h.load_all_outputs()
@@ -117,6 +155,7 @@ def run_pipeline():
     print(f"\nCompleted at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("\nRun dashboard:")
     print("  python -m streamlit run dashboard/app.py")
+
 
 if __name__ == "__main__":
     run_pipeline()
