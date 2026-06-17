@@ -1,0 +1,44 @@
+{
+    "candidate_id": "candidate_002",
+
+    "education_documents": [
+        {
+            "claim": "Bachelor of Computer Science",
+            "evidence_found": true,
+            "source": "university_transcript.pdf",
+            "confidence": 0.95
+        }
+    ],
+
+    "certifications": [
+        {
+            "claim": "Azure Data Fundamentals",
+            "evidence_found": false,
+            "source": "No matching certificate found",
+            "confidence": 0.0
+        }
+    ],
+
+    "work_experience": [
+        {
+            "claim": "Data Analyst at TechCorp",
+            "evidence_found": true,
+            "source": "employment_reference.pdf",
+            "confidence": 0.9
+        }
+    ],
+
+    "projects": [
+        {
+            "name": "Customer Analytics Pipeline",
+            "evidence_found": true,
+            "source": "github_repository",
+            "verified_skills": [
+                "Python",
+                "SQL",
+                "Git"
+            ],
+            "confidence": 0.92
+        }
+    ]
+}

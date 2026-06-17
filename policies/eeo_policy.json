@@ -1,0 +1,23 @@
+{
+  "biased_terms": [
+    "young",
+    "native speaker",
+    "rockstar",
+    "ninja",
+    "aggressive",
+    "digital native",
+    "recent graduate",
+    "male",
+    "female"
+  ],
+  "protected_terms": [
+    "age",
+    "gender",
+    "race",
+    "religion",
+    "nationality",
+    "marital status",
+    "disability",
+    "pregnancy"
+  ]
+}
