@@ -33,6 +33,20 @@ BUNDLE_RESUMES = {
         "Education: BSc Computer Science, University of Pristina, 2023",
         "Certifications: Azure Data Fundamentals",
     ],
+    "candidate_mentor_berisha": [
+        "Mentor Berisha",
+        "mentor.berisha@email.com | +383-44-987-654",
+        "Skills: JavaScript, HTML, CSS, Git",
+        "Experience: Junior Developer at SoftCo (2022-2024)",
+        "Education: BSc Information Technology, University of Prizren, 2022",
+    ],
+    "candidate_vjosa_gashi": [
+        "VjosaGashi",
+        "Data Analyst",
+        "vjosagashiemailcom",
+        "PythonSQLPowerBI",
+        "MastersComputerScience",
+    ],
 }
 
 

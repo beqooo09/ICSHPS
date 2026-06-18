@@ -1,0 +1,15 @@
+bundle_id: candidate_mentor_berisha
+source: career_portal
+application_type: standard
+candidate_category: experienced
+job:
+  role_title: Data Engineer
+  job_id: JOB-001
+  description: job/description.md
+  requirements: job/requirements.yaml
+files:
+  resume: resume/resume.pdf
+  application_form: application/form.json
+metadata:
+  candidate_id: C002
+  submitted_at: "2026-06-11T10:00:00Z"
